@@ -11,7 +11,7 @@ namespace Dungeon;
  * Pas de getter ici : les propriétés se lisent directement ($hero->hp). Ce qui
  * empêche l'extérieur de les écrire, c'est `private(set)` (ou `readonly`).
  */
-final class Hero implements Fighter 
+final class Hero implements Fighter
 {
     /** Le maximum de points de vie. Lecture publique, écriture réservée à la classe. Niveau 1. */
     public private(set) int $maxHp = 0;
