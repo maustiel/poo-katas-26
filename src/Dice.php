@@ -17,6 +17,7 @@ class Dice
     ) {
     }
 
+     
     /** Fabrique statique : doit renvoyer un dé à 6 faces. */
     public static function d6(): self
     {
