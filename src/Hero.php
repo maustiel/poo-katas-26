@@ -34,6 +34,9 @@ final class Hero implements Fighter
     /** Le sac, créé dans le constructeur : composition. Jamais remplacé, donc readonly. Niveau 2. */
     public readonly Inventory $inventory;
 
+
+
+
     /** L'arme équipée, ou null si le héros se bat à mains nues. Écrite par equip() seulement. Niveau 3. */
     public private(set) ?Weapon $weapon = null;
 
@@ -58,6 +61,7 @@ final class Hero implements Fighter
 
         $this->maxHp = $maxHp;
         $this->hp = $maxHp;
+        $this->inventory = new Inventory();
     }
     /** Doit retirer $amount points de vie, sans jamais descendre sous 0. */
     public function takeDamage(int $amount): void
@@ -108,3 +112,10 @@ $arthur->takeDamage(50);
 echo $arthur, ' ', var_export($arthur->isFullHealth, true), PHP_EOL;
 $arthur->heal(50);
 echo $arthur, ' ', var_export($arthur->isFullHealth, true), PHP_EOL;
+
+// $arthur = new Hero('Arthur');
+// $arthur->inventory->add(new Item('Épée courte', 2.0));
+// $arthur->inventory->add(new Item('Potion', 0.5));
+
+// echo 'Enclume acceptée ? ', var_export($arthur->inventory->add(new Item('Enclume', 80.0)), true), "\n";
+// echo $arthur->inventory->count(), ' objets, ', $arthur->inventory->totalWeight(), " kg\n";

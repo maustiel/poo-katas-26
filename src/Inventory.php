@@ -26,34 +26,62 @@ final class Inventory implements \Countable, \IteratorAggregate
      * Niveau 2 : si le poids dépasse maxWeight, ne rien ajouter et renvoyer false.
      * Niveau 3 : à la place du false, lever une InventoryFullException.
      */
+   
+    /** Ajoute un objet, sauf si le sac déborde. */
     public function add(Item $item): bool
     {
-        throw new \LogicException('À implémenter');
+        if ($this->totalWeight() + $item->weight > $this->maxWeight) {
+            return false;
+        }
+
+        $this->items[] = $item;
+
+        return true;
     }
 
     /** Doit dire si un objet portant ce nom est dans le sac. */
     public function has(string $name): bool
     {
-        throw new \LogicException('À implémenter');
+        foreach ($this->items as $item) {
+            if ($item->name === $name) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /** Doit retirer le premier objet portant ce nom (et ne rien faire s'il n'y est pas). */
     public function remove(string $name): void
     {
-        throw new \LogicException('À implémenter');
+         foreach ($this->items as $index => $items ) {
+            if ($items->name === $name) {
+                unset($this->items[$index]);
+                $this->items = array_values($this->items);
+                return;
+            }
+         }
     }
 
     /** Doit renvoyer le nombre d'objets dans le sac. */
+   /** Le nombre d'objets dans le sac. */
     public function count(): int
     {
-        throw new \LogicException('À implémenter');
+        return count($this->items);
     }
 
     /** Doit renvoyer la somme des poids. */
+     /** La somme des poids, en kilos. */
     public function totalWeight(): float
     {
-        throw new \LogicException('À implémenter');
+        $total = 0.0;
+        foreach ($this->items as $item) {
+            $total += $item->weight;
+        }  
+        return $total;
     }
+ 
+    
 
     /**
      * Doit permettre le foreach sur l'inventaire. Niveau 4.
