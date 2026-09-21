@@ -14,22 +14,15 @@ namespace Dungeon;
 final class Hero implements Fighter
 {
     /** Le maximum de points de vie. Lecture publique, écriture réservée à la classe. Niveau 1. */
-    public private(set) int $maxHp = 0;
+     use HasHealth;
 
-   
-    public private(set) int $hp = 0 {
-        set => max(0, min($this->maxHp, $value));
-    }
 
-   
 
     /**
      * Propriété virtuelle (hook `get`, rien n'est stocké) : doit valoir true quand
      * hp est égal à maxHp. Chapitre Encapsulation.
      */
-       public bool $isFullHealth {
-        get => $this->hp === $this->maxHp;
-    }
+      
 
     /** Le sac, créé dans le constructeur : composition. Jamais remplacé, donc readonly. Niveau 2. */
     public readonly Inventory $inventory;
@@ -64,39 +57,31 @@ final class Hero implements Fighter
         $this->inventory = new Inventory();
     }
     /** Doit retirer $amount points de vie, sans jamais descendre sous 0. */
-    public function takeDamage(int $amount): void
-    {
-        $this->hp = max(0, $this->hp - $amount);
-    }
+  
 
     /** Doit rendre $amount points de vie, sans jamais dépasser $maxHp. */
-    public function heal(int $amount): void
-    {
-        $this->hp = min($this->maxHp, $this->hp + $amount);
-    }
+   
 
     /** Doit renvoyer true tant qu'il reste au moins 1 point de vie. */
-    public function isAlive(): bool
-    {
-       return $this->hp > 0;
-    }
+   
 
     /** Doit équiper l'arme passée en paramètre (elle remplace la précédente). Niveau 3. */
     public function equip(Weapon $weapon): void
     {
-        throw new \LogicException('À implémenter');
+        $this->weapon = $weapon;
     }
 
     /** Doit soigner le héros du montant de la potion, puis retirer la potion de l'inventaire. Niveau 3. */
     public function drink(Potion $potion): void
     {
-        throw new \LogicException('À implémenter');
+        $this->heal($potion->healing);
+        $this->inventory->remove($potion->name);
     }
 
     /** Doit renvoyer strength, plus les dégâts de l'arme équipée s'il y en a une. */
     public function attack(): int
     {
-        return $this->strength;
+         return $this->strength + ($this->weapon?->damage ?? 0);
     }
 
     /** Doit renvoyer "Arthur (7/10 PV)". */
